@@ -1,0 +1,54 @@
+<template name="dashboard">
+  {{#if show_dashboard}}
+  <div id="dashboard">
+    
+    {{#if can_create_game }}
+    <div id="buttons" class="pull-right">
+    <button id="create-game" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
+      <i class="icon-plane icon-white"></i>
+      &nbsp;Create Game
+    </button>
+    </div>
+    <div class="clear"></div>
+    {{/if}}
+    
+
+    <div class="alert alert-info">
+      <h1> Open Games </h1>  
+    </div>
+    <table id="open-game" class="table table-striped">
+      <tr>
+        <th>Player 1</th>
+        <th width="80px">Join</th>
+      </tr>
+      {{#each open_games}}
+        {{> open_game}}
+      {{/each}}
+    </table>
+
+    <div class="alert alert-success">
+      <h1> Ongoing Games </h1>  
+    </div>
+    <table id="open-game" class="table table-striped">
+      <tr>
+        <th>Player 1</th>
+        <th>Player 2</th>
+        <th width="80px">Join</th>
+      </tr>
+
+      {{#each ongoing_games}}
+        {{> ongoing_game}}
+      {{/each}}
+    </table>
+
+    <div class="alert alert-block">
+      <h1> Players</h1>
+    </div>    
+    <ul class="thumbnails">
+      {{#each players}}
+        {{> player-stat}}
+      {{/each}}
+    </ul>
+  </div>
+  {{/if}}
+</template>

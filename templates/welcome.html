@@ -1,0 +1,24 @@
+<template name="welcome">
+  {{#if show_welcome}}
+  <div class="hero-unit welcome">
+    <h1>Rock, Paper, Scissor <br /> Shoot</h1>    
+    <div id="create-player">
+
+      {{#if player_name}}
+      <div id="placeholder-img">
+        <img src="http://robohash.org/{{player_name}}?size=300x300" />
+      </div>
+      <h2>{{player_name}}</h2>
+      <p>Ready to commence battle?</p>
+      <a class="continue btn btn-danger btn-large">Continue!</a>
+      {{/if}}
+      
+      {{# unless player_name }}
+        <div id="placeholder-img"></div>
+        <input type="text" placeholder="Type Name..."> <br />
+        <a class="create-player btn btn-primary btn-large">Create Player</a>
+      {{/unless}}
+    </div>
+  </div>
+  {{/if}}
+</template>
