@@ -6,8 +6,13 @@ if (Meteor.is_client) {
   }
 
   Template.ongoing_game.player2_name = function(){
+
+    if(this.computer) return "RPSS BOT"
+        
     var player2 = Players.findOne(this.player2);
-    return player2.name;
+    if(player2) {
+     return player2.name; 
+    }
   }
   
   Template.ongoing_game.p1_score = function(){

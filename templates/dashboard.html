@@ -45,6 +45,24 @@
       {{/each}}
     </table>
 
+    <div class="alert alert-success">
+      <h1> My Games </h1>  
+    </div>
+    <table id="ongoing-game" class="table table-striped">
+      <tr>
+        <th>Player 1</th>
+        <th>Player 2</th>
+        <th width="50px">P1</th>
+        <th width="50px">P2</th>
+        <th width="100px">Join</th>
+      </tr>
+
+      {{#each my_games}}
+        {{> ongoing_game}}
+      {{/each}}
+    </table>
+
+
     <div class="alert alert-block">
       <h1> Players</h1>
     </div>    

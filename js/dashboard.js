@@ -14,6 +14,19 @@ if (Meteor.is_client) {
     return games;
   }
   
+  Template.dashboard.my_games = function(){
+    var player = Players.findOne(Session.get('player_id'));
+    if(player) {
+      var p1_games = Games.find({player1: player._id}).fetch();
+      var p2_games = Games.find({player2: player._id}).fetch();
+      games = []
+      games = games.concat(p1_games)
+      games = games.concat(p2_games)
+      return games;
+    }
+
+  }
+  
   
   Template.dashboard.show_dashboard = function(){
     return Session.get('show_dashboard') && (Session.get('game_id')== null)

@@ -163,6 +163,7 @@ if (Meteor.is_client) {
     },
     
     'click #return-btn': function(event){
+      Session.set('game_id', null)
       Router.main();
       Router.navigate('');
     }
@@ -283,8 +284,8 @@ var waiting_on_p2 = function(round) {
 }
 
 var ai_move = function(round) {
-  var move = ["rock", "paper", "scissors"][Math.floor(Math.random()*3)]  
-  round['p2'] = move
+  var move = ["rock", "paper", "scissors"][Math.floor(Math.random()*3)];
+  round['p2'] = move;
   return round;
 }
 
