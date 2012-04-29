@@ -42,6 +42,10 @@ if (Meteor.is_client) {
     }
   }
 
+  Template.ongoing_game.game_status = function(){
+    return waiting_msg(this);
+  }
+  
   
   Template.ongoing_game.events = {
     'click .watch-game': function(){

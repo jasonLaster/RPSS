@@ -72,12 +72,7 @@ if (Meteor.is_client) {
   }
   
   Template.game.player2_name = function(){
-    
-    if(computer_game()) {
-      return "RPSS BOT"
-    }
-    
-    return player2() ? player2().name : "";
+    return p2_name();
   }
   
   Template.game.player1_score = function(){
@@ -136,21 +131,16 @@ if (Meteor.is_client) {
   }
 
   Template.game.waiting_msg = function(){
-    var round = current_round();
-    if(round) {
-      if( waiting_on_p1()) {
-        return "WAITING FOR " + player2().name;
-      } else if (waiting_on_p2()) {
-        return "WAITING FOR " + player1().name;
-      }
-      return "";
-    }
+    return waiting_msg();
   }
   
   Template.game.waiting = function(){
     return (waiting_on_p1() || waiting_on_p2()) ? "waiting" : "";
   }
   
+  Template.game.watching_game = function(){
+    return !(player_num() === null);
+  }
   
   Template.game.events = {
     'click button.move': function(event){
@@ -173,20 +163,6 @@ if (Meteor.is_client) {
 
 
 // ONGOING HELPER FUNCTIONS
-
-var current_round = function(){
-  var game = current_game()
-  return game ? game.rounds[game.rounds.length-1] : null;  
-}
-
-var current_round = function(){
-  var game = current_game()
-  if(game){
-    return game.rounds[game.rounds.length-1];
-  } else {
-    return null;
-  }
-}
 
 var previous_round = function(){
   var game = current_game()
@@ -236,7 +212,7 @@ var update_round = function(player, move) {
 }
 
 
-// ROUND HELPER FUNCTIONS
+/* ROUND HELPER FUNCTIONS */
 var p1_wins = function(round) {
   if (round.p1 === round.p2) {
     return false;
@@ -269,6 +245,7 @@ var round_msg = function(round) {
   return ""
 }
 
+// WAITING
 var waiting_on_p1 = function(round) {
   if(round === undefined) round = current_round();
   if(round) {
@@ -283,13 +260,24 @@ var waiting_on_p2 = function(round) {
   }
 }
 
+
+
+// AI
 var ai_move = function(round) {
   var move = ["rock", "paper", "scissors"][Math.floor(Math.random()*3)];
   round['p2'] = move;
   return round;
 }
 
-// GAME HELPER FUNCTIONS
+/* GAME HELPER FUNCTIONS */
+
+var current_round = function(game){
+  if(game === undefined) var game = current_game()
+  if(game){
+    return game.rounds[game.rounds.length-1];
+  }
+}
+
 
 var player1 = function(game){
   if (game === undefined) game = current_game(); 
@@ -307,6 +295,17 @@ var player2 = function(game){
   } else {
     return null;
   }
+}
+
+var p2_name = function(game){
+  if(game===undefined) var game = current_game();
+  
+  if(computer_game(game)) {
+    return "RPSS BOT"
+  } else {
+    return player2(game) ? player2(game).name : "";  
+  }
+
 }
 
 var p1_score = function(game){
@@ -352,7 +351,7 @@ var p1_winning = function(game) {
 var p2_winning = function(game) {
   if (game === undefined) game = current_game(); 
   if(game) {
-   return !((p1_score(game) > p2_score(game)) ? "winning" : "") 
+   return ((p2_score(game) > p1_score(game)) ? "winning" : "") 
   }
 }
 
@@ -369,3 +368,19 @@ var computer_game = function(game) {
     return game.computer;
   }
 }
+
+
+var waiting_msg = function(game) {
+  if(game===undefined) var game = current_game();
+  var round = current_round(game);
+  
+  if(round) {
+    if(waiting_on_p1(round)) {
+      return "WAITING FOR " + p2_name(game);
+    } else if (waiting_on_p2(round)) {
+      return "WAITING FOR " + player1(game).name;
+    }
+    return "";
+  }
+}
+

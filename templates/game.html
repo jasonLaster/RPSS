@@ -37,7 +37,7 @@
         </div>
       </li>
     </ul>
-
+    {{#if watching_game }}
     <div id="move" class="{{waiting}} buttons btn-group">
       <h4>ROUND: {{round_number}}</h4>
       <p>{{waiting_msg}}</p>
@@ -47,6 +47,7 @@
         <button id="scissors" class="move {{p_scissors}} btn">Scissors</button>
       </div>
     </div>
+    {{/if}}
 
     <div id="rounds">
       <table class="table table-striped">
