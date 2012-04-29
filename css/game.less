@@ -3,10 +3,21 @@
     margin-bottom:10px;
   }
 
+  #round-num{
+    padding:5px ;
+    width:auto; 
+    margin:10px auto 20px auto;
+    border:2px solid #555;
+    background:#f3edd2;
+    border-radius:8px; 
+    h1 {text-align:center; width:auto; color:#b94a48;}
+  }
+
   ul#players {
-    width:500px;
+    width:660px;
     margin:auto auto;
     li{
+      h2 {text-align:center}
       .thumbnail {
         &.winning {border: 2px solid #3a87ad;}
         .caption {
@@ -24,9 +35,10 @@
   #move {
     width:180px;
     text-align:center;
-    border:1px solid #ccc;
+    border:1px solid #666;
     padding:5px 15px;
     border-radius:5px;
+    &.waiting {border:1px dashed #b94a48;}
     #buttons {margin-top:10px;}
   }
   

@@ -6,31 +6,36 @@
     </div>
     <div class="clear"></div>
   
+    <div id="round-num">
+      <h1>{{round_number}}</h1>
+    </div>
+    
     <ul id="players" class="thumbnails">
-      <li class="span3">
+      <li class="span4">
+        <h2>{{player1_name}}</h2>
         <div class="thumbnail {{p1_winning}}">
           <img class="large" src="http://robohash.org/{{player1_name}}?size=280x200" alt="">
           <div class="caption">
-            <h3>{{player1_name}}</h3>
-            <h4>{{player1_score}} WINS</h4>
+            <h4>{{player1_name}} has {{player1_score}} WINS</h4>
+            <h4>Last turn {{player1_name}} threw {{p1_prev_move}} </h4>
           </div>
         </div>
       </li>
 
-      <li class="offset3 span3">
+      <li class="span4">
+        <h2>{{player2_name}}</h2>
         <div class="thumbnail {{p2_winning}}">
           <img class="large" src="http://robohash.org/{{player2_name}}?size=280x200" alt="">
           <div class="caption">
-            <h3>{{player2_name}}</h3>
-            <h4>{{player2_score}} WINS</h4>
+            <h4>{{player2_name}} has {{player2_score}} WINS</h4>
+            <h4>Last turn {{player2_name}} threw {{p2_prev_move}} </h4>
           </div>
         </div>
       </li>
     </ul>
-    
-    <div id="move" class="buttons btn-group">
+
+    <div id="move" class="{{waiting}} buttons btn-group">
       <h4>ROUND: {{round_number}}</h4>
-      <h4>{{prev_round_message}}</h4>
       <p>{{waiting_msg}}</p>
       <div id="buttons">
         <button id="rock"     class="move {{p_rock}} btn">Rock</button>
@@ -38,32 +43,7 @@
         <button id="scissors" class="move {{p_scissors}} btn">Scissors</button>
       </div>
     </div>
-    
-    <!-- <div id="previous-rounds">
-        <p>Previous Round</p>
 
-        <table>
-          <tr>
-            <td>
-        <div id="p1" class="buttons btn-group">
-          <button id="rock"     class="btn {{p1_rock}}">Rock</button>
-          <button id="paper"    class="btn {{p1_paper}}">Paper</button>
-          <button id="scissors" class="btn {{p1_scissors}}">Scissors</button>
-        </div>
-        </td>
-        <td>
-        <div id="p2" class="buttons btn-group">
-          <button id="rock"     class="btn {{p2_rock}}">Rock</button>
-          <button id="paper"    class="btn {{p2_paper}}">Paper</button>
-          <button id="scissors" class="btn {{p2_scissors}}">Scissors</button>
-        </div>
-        </td>
-        </tr>
-        </table>
-        
-      </div>
-       -->
-    
     <div id="rounds">
       <table class="table table-striped">
         <tr>
@@ -74,7 +54,7 @@
       
         {{#each rounds}}
         <tr>
-          <td>{{round_winner}}</td>
+          <td>{{round_msg}}</td>
           <td class="{{p1_wins_round}}">{{p1}}</td>
           <td class="{{p2_wins_round}}">{{p2}}</td>
         </tr>

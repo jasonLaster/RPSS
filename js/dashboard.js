@@ -19,7 +19,9 @@ if (Meteor.is_client) {
   
   Template.dashboard.can_create_game = function(){
     var player1 = Players.findOne(Session.get('player_id'))
-    return Games.find({player1: player1._id}).count()==0;
+    if(player1) {
+      return Games.find({player1: player1._id}).count()==0; 
+    }
   }
 
   Template.dashboard.events = {
