@@ -1,12 +1,44 @@
-#return {
-  margin-bottom:10px;
-}
+#game {
+  #return {
+    margin-bottom:10px;
+  }
 
-ul#players {
-  width:500px;
-  margin:auto auto;
-}
+  ul#players {
+    width:500px;
+    margin:auto auto;
+    li{
+      .thumbnail {
+        &.winning {border: 2px solid #3a87ad;}
+        .caption {
+          text-align:center;
+          p {margin-top:20px;}
+        }
+      }
+    }
+  }
 
-.buttons {
-  margin:20px auto 10px auto;  
+  .buttons {
+    margin:0px auto 10px auto;  
+  }
+  
+  #move {
+    width:180px;
+    text-align:center;
+    border:1px solid #ccc;
+    padding:5px 15px;
+    border-radius:5px;
+    #buttons {margin-top:10px;}
+  }
+  
+  #rounds {
+    width:400px;
+    margin:40px auto;
+    table {
+      td {
+        font-weight:bold; text-align:center;
+        &.win {color:#468847;}
+        &.lose {color:#b94a48;}
+      }  
+    }
+  }  
 }

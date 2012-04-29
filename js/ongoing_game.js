@@ -12,7 +12,7 @@ if (Meteor.is_client) {
   
   Template.ongoing_game.events = {
     'click .watch-game': function(){
-      Session.set('game_id', this._id);
+      Router.game(this._id)
     }
   }
   

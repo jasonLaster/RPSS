@@ -2,30 +2,39 @@ Session.set('player_id', null);
 Session.set('show_dashboard', false);
 Session.set("game_id", null);
 
+
+
 Players = new Meteor.Collection("players");
 Games = new Meteor.Collection("games");
 
 
+if (Meteor.is_client) {
 
-// var RpssRouter = Backbone.Router.extend({
-//   
-//   routes: {
-//     ":game_id": "game"
-//   },
-//   game: function (game_id) {
-//     Session.set("game_id", game_id);
-//   }
-//   
-// });
+  var RpssRouter = Backbone.Router.extend({
+  
+    routes: {
+      "":"main",
+      ":game_id": "game"
+    },
+  
+    main: function(){
+      Session.set("game_id", null);
+    },
+  
+    game: function (game_id) {
+      Session.set('show_dashboard', true)
+      Session.set("game_id", game_id);
+    }
+  
+  });
+
+  Router = new RpssRouter;
+
+  Meteor.startup(function () {
+    Backbone.history.start({pushState: true});
+  });
+
+
+}
 // 
-// Router = new RpssRouter;
 // 
-// Meteor.startup(function () {
-//   Backbone.history.start({pushState: true});
-// });
-
-
-Meteor.startup(function(){
-  // Session.set('show_dashboard', true)
-  // Session.set('game_id', "c8b4c18f-d210-47e9-ad13-78723c1541de")
-})
