@@ -10,15 +10,15 @@ if (Meteor.is_client) {
 
   Template.dashboard.ongoing_games = function() {
     var games = Games.find({closed:true}).fetch();
-    games = _.filter(games, function(game){return (game.computer == undefined || !game.computer)})
+    games = _.filter(games, function(game){return (game.computer == undefined || !game.computer)});
     return games;
   }
   
   Template.dashboard.my_games = function(){
     var player = Players.findOne(Session.get('player_id'));
     if(player) {
-      var p1_games = Games.find({player1: player._id}).fetch();
-      var p2_games = Games.find({player2: player._id}).fetch();
+      var p1_games = Games.find({player1: player._id, closed: true}).fetch();
+      var p2_games = Games.find({player2: player._id, closed: true}).fetch();
       games = []
       games = games.concat(p1_games)
       games = games.concat(p2_games)
