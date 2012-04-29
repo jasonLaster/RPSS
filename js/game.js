@@ -72,6 +72,11 @@ if (Meteor.is_client) {
   }
   
   Template.game.player2_name = function(){
+    
+    if(computer_game()) {
+      return "RPSS BOT"
+    }
+    
     return player2() ? player2().name : "";
   }
   
@@ -126,6 +131,9 @@ if (Meteor.is_client) {
     }
   }
 
+  Template.game.round_one = function(){
+    return round_one();
+  }
 
   Template.game.waiting_msg = function(){
     var round = current_round();
@@ -215,15 +223,16 @@ var update_round = function(player, move) {
   
   // make move
   round[player] = move;
+  if(computer_game()) ai_move(round);
   rounds[rounds.length-1] = round
+  
+  // update rounds
   Games.update(game._id, {$set: {rounds: rounds}});
   
   if((round.p1 != null) && round.p2 != null) {
     new_round()
   }
 }
-
-
 
 
 // ROUND HELPER FUNCTIONS
@@ -250,7 +259,8 @@ var round_msg = function(round) {
     if(p1_wins(round)) {
       return player1().name + " WON"
     } else if (p2_wins(round)) {
-      return player2().name + " WON"
+      
+      return computer_game() ? "RBSS BOT WON" : (player2().name + " WON")
     } else {
       return "TIE"
     }     
@@ -272,6 +282,11 @@ var waiting_on_p2 = function(round) {
   }
 }
 
+var ai_move = function(round) {
+  var move = ["rock", "paper", "scissors"][Math.floor(Math.random()*3)]  
+  round['p2'] = move
+  return round;
+}
 
 // GAME HELPER FUNCTIONS
 
@@ -286,7 +301,7 @@ var player1 = function(game){
 
 var player2 = function(game){
   if (game === undefined) game = current_game(); 
-  if(game) {
+  if(game) {    
     return Players.findOne(game.player2)  
   } else {
     return null;
@@ -340,4 +355,16 @@ var p2_winning = function(game) {
   }
 }
 
+var round_one = function(game) {
+  if (game === undefined) game = current_game(); 
+  if(game) {
+    return game.rounds.length == 1
+  }
+}
 
+var computer_game = function(game) {
+  if (game === undefined) game = current_game(); 
+  if(game) {
+    return game.computer;
+  }
+}

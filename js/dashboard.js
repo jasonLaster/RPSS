@@ -9,7 +9,9 @@ if (Meteor.is_client) {
   }
 
   Template.dashboard.ongoing_games = function() {
-    return Games.find({closed:true}).fetch();
+    var games = Games.find({closed:true}).fetch();
+    games = _.filter(games, function(game){return (game.computer == undefined || !game.computer)})
+    return games;
   }
   
   
@@ -26,13 +28,20 @@ if (Meteor.is_client) {
 
   Template.dashboard.events = {
     
-    'click #create-game': function(){
+    'click #create-human-game': function(){
       var player1 = Players.findOne(Session.get('player_id'))
-      var opts = {player1: player1._id, closed: false, rounds: [{p1: null, p2:null}]}
-      if(Template.dashboard.can_create_game()) {
-        Games.insert(opts);  
-      }
+      var opts = {player1: player1._id, closed: false, computer:false, rounds: [{p1: null, p2:null}]}
+      Games.insert(opts);
+    },
+    
+    'click #create-computer-game': function(){
+      var player1 = Players.findOne(Session.get('player_id'))
+      var opts = {player1: player1._id, closed: true, computer:true, rounds: [{p1: null, p2:null}]}
+      var id = Games.insert(opts);
+      Router.game(id)
+      Router.navigate(id);
     }
+    
   }
 
 };

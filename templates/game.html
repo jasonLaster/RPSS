@@ -16,8 +16,10 @@
         <div class="thumbnail {{p1_winning}}">
           <img class="large" src="http://robohash.org/{{player1_name}}?size=280x200" alt="">
           <div class="caption">
+            {{#unless round_one}}
             <h4>{{player1_name}} has {{player1_score}} WINS</h4>
             <h4>Last turn {{player1_name}} threw {{p1_prev_move}} </h4>
+            {{/unless}}
           </div>
         </div>
       </li>
@@ -27,8 +29,10 @@
         <div class="thumbnail {{p2_winning}}">
           <img class="large" src="http://robohash.org/{{player2_name}}?size=280x200" alt="">
           <div class="caption">
+            {{#unless round_one}}
             <h4>{{player2_name}} has {{player2_score}} WINS</h4>
             <h4>Last turn {{player2_name}} threw {{p2_prev_move}} </h4>
+            {{/unless}}
           </div>
         </div>
       </li>

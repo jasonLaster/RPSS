@@ -5,7 +5,9 @@
       <span class="name">{{player1_name}}</span>
     </td>
     <td>
+      {{#unless my_game }}
       <button class="join-game btn btn-small">Join Game</button>
+      {{/unless}}
     </td>
   </tr>
 </template>

@@ -9,11 +9,18 @@ if (Meteor.is_client) {
     return player2.name;
   }
   
+  Template.open_game.my_game = function(){
+    var player_id = Session.get('player_id');
+    return this.player1 === player_id
+  }
+  
   Template.open_game.events = {
     'click .join-game': function(){
       var player2 = Players.findOne(Session.get('player_id'));
       if(this.player1 != player2._id) {
         Session.set('game_id', this._id);
+        Router.game(this._id)
+        Router.navigate(this._id);
         Games.update(this._id, {$set: {player2: player2._id, closed: true}}) 
       }
     }

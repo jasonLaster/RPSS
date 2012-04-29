@@ -19,14 +19,13 @@ if (Meteor.is_client) {
   
     main: function(){
       Session.set("game_id", null);
-      
-      Session.set('show_dashboard', true)
       Session.set('player_id', $.cookie('player_id'));
     },
   
     game: function (game_id) {
       Session.set('show_dashboard', true)
       Session.set("game_id", game_id);
+      Session.set('player_id', $.cookie('player_id'));
     }
   
   });
