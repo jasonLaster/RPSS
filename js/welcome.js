@@ -9,6 +9,10 @@ if (Meteor.is_client) {
   Template.welcome.show_welcome = function(){
     return !Session.get('show_dashboard');
   }
+  
+  Template.welcome.create_act = function(){
+    return !Session.get("login_section");
+  }
 
   Template.welcome.events = {
     'click a.create-player' : function (event) {
@@ -31,7 +35,31 @@ if (Meteor.is_client) {
      
     'click a.continue': function() {
       Session.set('show_dashboard', true);
-    }   
+    },
+  
+    // LOGIN buttons
+    'click a#login-link': function(){
+      Session.set("login_section", true);
+    },
+    
+    'click a#login-name': function(event){
+      var $input = $(event.target).siblings('input');
+      var player_name = $input.val();
+      var players = Players.find({name: player_name}).fetch()
+      if(players.length >0) {
+        var player = players[0];
+        Session.set('player_id', player._id);
+        $.cookie('player_id', player._id);
+        Session.set("login_section", false);
+      } else {
+        $input = $(event.target).siblings('input').val('');
+      }
+    },
+    
+    'click a#cancel-login': function(){
+      Session.set("login_section", false);
+    }
+  
   }
 
 };

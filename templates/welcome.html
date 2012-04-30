@@ -14,9 +14,25 @@
       {{/if}}
       
       {{# unless player_name }}
-        <div id="placeholder-img"></div>
-        <input type="text" placeholder="Type Name..."> <br />
-        <a class="create-player btn btn-primary btn-large">Create Player</a>
+        {{#if create_act }}
+        <div id="create-act">
+          <div id="placeholder-img"></div>
+          <input type="text" placeholder="Type Name..." /> <br />
+          <a class="create-player btn btn-primary btn-large">Create Player</a>
+        </div>
+        <p>
+          Already have an account? 
+          <a id="login-link" href="#">Login</a>
+        </p>
+        {{/if}}
+        {{# unless create_act }}
+        <div id="login-input">
+          <div id="placeholder-img"></div>
+          <input type="text" placeholder="Name..." />  <br />
+          <a id="login-name" class="btn btn-primary btn-large">Login</a>
+          <a id="cancel-login" href="#">Cancel</a>
+        </div>
+        {{/unless}}
       {{/unless}}
     </div>
   </div>
