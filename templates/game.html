@@ -13,12 +13,11 @@
     <ul id="players" class="thumbnails">
       <li class="span4">
         <h2>{{player1_name}}</h2>
-        <div class="thumbnail {{p1_winning}}">
+        <div class="thumbnail {{p1_won_prev_round}}">
           <img class="large" src="http://robohash.org/{{player1_name}}?size=280x200" alt="">
           <div class="caption">
             {{#unless round_one}}
-            <h4>{{player1_name}} has {{player1_score}} WINS</h4>
-            <h4>Last turn {{player1_name}} threw {{p1_prev_move}} </h4>
+            <h1 class="{{show_prev_results}}">{{player1_score}}</h1>
             {{/unless}}
           </div>
         </div>
@@ -26,26 +25,58 @@
 
       <li class="span4">
         <h2>{{player2_name}}</h2>
-        <div class="thumbnail {{p2_winning}}">
+        <div class="thumbnail {{p2_won_prev_round}}">
           <img class="large" src="http://robohash.org/{{player2_name}}?size=280x200" alt="">
           <div class="caption">
             {{#unless round_one}}
-            <h4>{{player2_name}} has {{player2_score}} WINS</h4>
-            <h4>Last turn {{player2_name}} threw {{p2_prev_move}} </h4>
+            <h1 class="{{show_prev_results}}">{{player2_score}}</h1>
             {{/unless}}
           </div>
         </div>
       </li>
     </ul>
     {{#if watching_game }}
+    <!-- 
     <div id="move" class="{{waiting}} buttons btn-group">
       <h4>ROUND: {{round_number}}</h4>
-      <p>{{waiting_msg}}</p>
       <div id="buttons">
         <button id="rock"     class="move {{p_rock}} btn">Rock</button>
         <button id="paper"    class="move {{p_paper}} btn">Paper</button>
         <button id="scissors" class="move {{p_scissors}} btn">Scissors</button>
       </div>
+    </div> 
+    -->
+    <div id="move-hq">
+      {{#if show_move }}
+      <ul id="moves" class="thumbnails">
+        <li class="span3">
+          <div id="rock" class="move thumbnail"></div>
+        </li>
+        <li class="span3">
+          <div id="paper" class="move thumbnail"></div>
+        </li>
+        <li class="span3">
+          <div id="scissors" class="move thumbnail"></div>
+        </li>
+      </ul>
+      {{/if}}
+      
+      {{#if show_waiting }}
+      <div id="waiting">
+        <h3>{{waiting_msg}}</h3>
+      </div>
+      {{/if}}
+      
+      {{#if show_prev}}
+      <div id="prev-result">        
+        <div id="p1_move" class="{{p1_prev_move}} {{hide_hand}}"></div>
+        <div id="clock">
+          <h1>{{clock_msg}}</h1>
+        </div>
+        <div id="p2_move" class="{{p2_prev_move}} {{hide_hand}}"></div>
+      </div>
+      {{/if}}
+      
     </div>
     {{/if}}
 

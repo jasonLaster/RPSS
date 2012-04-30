@@ -5,6 +5,32 @@ if (Meteor.is_client) {
     return Session.get('game_id') != null
   }
 
+  Template.game.show_move = function(){
+    var have_not_made_move = player_num()=="p1" ? waiting_on_p1() : waiting_on_p2();
+    var showing_previous_result = Session.get('display_clock') > 0;
+    return have_not_made_move && !showing_previous_result
+  }
+
+  Template.game.show_waiting = function(){
+    var opponent_has_not_made_move = ((player_num()=="p1") ? waiting_on_p2() : waiting_on_p1());
+    var ive_made_move = !(player_num()=="p1" ? waiting_on_p1() : waiting_on_p2());
+    var showing_previous_result = (Session.get('display_clock') > 0);
+    return opponent_has_not_made_move && ive_made_move && !showing_previous_result;
+  }
+
+  Template.game.show_prev = function(){
+    return Session.get('display_clock')>0;
+  }
+
+  Template.game.hide_hand = function(){
+    return hide_hand() ? "hide" : ""
+  }
+  
+  Template.game.show_prev_results = function(){
+    return show_prev_results() ? "" : "hide"
+  }
+  
+
   Template.game.rounds = function(){
     var game = current_game();
     if(game) {
@@ -84,12 +110,60 @@ if (Meteor.is_client) {
   }
 
   Template.game.p1_wins_round = function(){
-    return p1_wins(this) ? "win" : "lose"
+    if(p1_wins(this)) {
+      return "win"
+    } else if (p2_wins(this)) {
+      return "lose"
+    } else {
+      return "tie"
+    }
   }
   
   Template.game.p2_wins_round = function(){
-    return p2_wins(this) ? "win" : "lose"
+    if(p2_wins(this)) {
+      return "win"
+    } else if (p1_wins(this)) {
+      return "lose"
+    } else {
+      return "tie"
+    }
+
   }
+
+  Template.game.p1_won_prev_round = function(){
+    var round = previous_round()
+    if(round == null) {
+      return ""
+    }
+    if(!hide_hand()) {
+      if(p1_wins(round)) {
+        return "win"
+      } else if (p2_wins(round)) {
+        return "lose"
+      } else {
+        return "tie"
+      }
+    }
+    return ""
+  }
+  
+  Template.game.p2_won_prev_round = function(){
+    var round = previous_round()
+    if(round == null) {
+      return ""
+    }
+    if(!hide_hand()) {
+      if(p2_wins(round)) {
+        return "win"
+      } else if (p1_wins(round)) {
+        return "lose"
+      } else {
+        return "tie"
+      }  
+    }
+    return ""
+  }
+
 
   Template.game.round_number = function(){
     var game = current_game();
@@ -134,6 +208,15 @@ if (Meteor.is_client) {
     return waiting_msg();
   }
   
+  Template.game.clock_msg = function(){
+    var time = Session.get('display_clock');
+    if(time>3) {
+      return (time-3)
+    } else {
+      return "VS."
+    }
+  }
+  
   Template.game.waiting = function(){
     return (waiting_on_p1() || waiting_on_p2()) ? "waiting" : "";
   }
@@ -143,7 +226,7 @@ if (Meteor.is_client) {
   }
   
   Template.game.events = {
-    'click button.move': function(event){
+    'click .move': function(event){
       var $button = $(event.target);
       var move = $button.attr('id');
       var player = player_num()
@@ -206,14 +289,27 @@ var update_round = function(player, move) {
   // update rounds
   Games.update(game._id, {$set: {rounds: rounds}});
   
-  if((round.p1 != null) && round.p2 != null) {
+  if(round_over()) {
     new_round()
+    Session.set("display_clock",6);
+    Meteor.setTimeout(display_clock, 500);
   }
 }
 
+var hide_hand = function(){
+  var time = Session.get('display_clock');
+  return (time>3)
+}
+
+var show_prev_results = function(){
+  var time = Session.get('display_clock');
+  return (time <= 3);
+}
 
 /* ROUND HELPER FUNCTIONS */
 var p1_wins = function(round) {
+  if(round === undefined) round = previous_round();
+  
   if (round.p1 === round.p2) {
     return false;
   } else{
@@ -222,6 +318,7 @@ var p1_wins = function(round) {
 }
 
 var p2_wins = function(round) {
+  if(round === undefined) round = previous_round();
   if (round.p1 === round.p2) {
     return false;
   } else{
@@ -245,22 +342,43 @@ var round_msg = function(round) {
   return ""
 }
 
+var display_clock = function(){
+  var time = Session.get('display_clock');
+  Session.set('display_clock',--time);
+  time = Session.get('display_clock');
+  if(time>0) {
+    Meteor.setTimeout(display_clock, 500)  
+  }
+}
+
 // WAITING
+var waiting = function(round) {
+  if(round === undefined) round = current_round();
+  if(round) {
+    return round.p2 == null && round.p1 == null;
+  }
+}
+
 var waiting_on_p1 = function(round) {
   if(round === undefined) round = current_round();
   if(round) {
-    return round.p1 != null && round.p2 == null;
+    return round.p1 == null;
   }
 }
 
 var waiting_on_p2 = function(round) {
   if(round === undefined) round = current_round();
   if(round) {
-    return round.p2 != null && round.p1 == null;
+    return round.p2 == null;
   }
 }
 
-
+var round_over = function(round) {
+  if(round === undefined) round = current_round();
+  if(round) {
+    return round.p1 != null && round.p2 != null;
+  }
+}
 
 // AI
 var ai_move = function(round) {
@@ -295,6 +413,11 @@ var player2 = function(game){
   } else {
     return null;
   }
+}
+
+var p1_name = function(game){
+  if(game===undefined) var game = current_game();
+  return player1(game) ? player1(game).name : "";  
 }
 
 var p2_name = function(game){
@@ -376,9 +499,9 @@ var waiting_msg = function(game) {
   
   if(round) {
     if(waiting_on_p1(round)) {
-      return "WAITING FOR " + p2_name(game);
+      return "WAITING FOR " + p1_name(game);
     } else if (waiting_on_p2(round)) {
-      return "WAITING FOR " + player1(game).name;
+      return "WAITING FOR " + p2_name(game);
     }
     return "";
   }

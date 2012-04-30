@@ -1,6 +1,8 @@
 Session.set('player_id', null);
 Session.set('show_dashboard', false);
 Session.set("game_id", null);
+Session.set("display_clock",0);
+
 
 Session.set("login_section", false);
 

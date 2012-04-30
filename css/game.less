@@ -19,10 +19,10 @@
     li{
       h2 {text-align:center}
       .thumbnail {
-        &.winning {border: 2px solid #3a87ad;}
+        &.win {border: 2px solid #3a87ad;}
         .caption {
           text-align:center;
-          p {margin-top:20px;}
+          h1.hide {color:white;}
         }
       }
     }
@@ -42,6 +42,59 @@
     #buttons {margin-top:10px;}
   }
   
+
+  #move-hq {
+    margin:20px auto; padding:20px;
+    width:750px; height:180px;
+    border:2px solid #ccc; border-radius:10px;
+
+    ul#moves {
+      width: 750px; margin:auto auto;
+      li {
+        .move {
+          height:150px;
+          border:2px solid #999;
+          &#rock {background:url('/img/hands/rock.jpg') no-repeat	;}
+          &#paper {background:url('/img/hands/paper.jpg') no-repeat	;}
+          &#scissors {background:url('/img/hands/scissors.jpg') no-repeat	;}
+          &:hover {border-color:#3a87ad; cursor:pointer;}
+        }        
+      }
+    }
+    #waiting {
+      h3 {text-align:center; margin-top:80px;}
+    }
+    
+    #prev-result {
+      position:relative;
+      height:200px; width:750px;
+      #p1_move {
+        width:293px; height:124px;
+        position:absolute; top:10px; left:20px;
+        &.rock {background:url('/img/hands/p1_rock.jpg') no-repeat;}
+        &.paper {background:url('/img/hands/p1_paper.jpg') no-repeat;}
+        &.scissors {background:url('/img/hands/p1_scissors.jpg') no-repeat;}
+        &.hide {background:none}
+      }
+      #p2_move {
+        width:293px; height:124px;
+        position:absolute; top:10px; right:20px;
+        &.rock {background:url('/img/hands/p2_rock.jpg') no-repeat;}
+        &.paper {background:url('/img/hands/p2_paper.jpg') no-repeat;}
+        &.scissors {background:url('/img/hands/p2_scissors.jpg') no-repeat;}
+        &.hide {background:none}
+      }
+      #clock {
+        font-size:30px; font-weight:bold;
+        position:absolute; top:50px; left:340px;
+        h1 {width:70px; height:60px; line-height:30px; text-align:center; margin-top:12px;}
+        width:70px; height:60px; border:2px solid #b94a48; border-radius:10px;
+      }
+    }
+    
+  }
+
+  
   #rounds {
     width:400px;
     margin:40px auto;
@@ -50,6 +103,7 @@
         font-weight:bold; text-align:center;
         &.win {color:#468847;}
         &.lose {color:#b94a48;}
+        &.tie {color:#666}
       }  
     }
   }  
