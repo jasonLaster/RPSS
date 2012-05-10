@@ -32,7 +32,7 @@ if (Meteor.is_client) {
   
   
   Template.dashboard.show_dashboard = function(){
-    return Session.get('show_dashboard') && (Session.get('game_id')== null)
+    return Session.get('show_dashboard') && (Session.get('game_id')== null) && (Session.get('api') == false)
   }
   
   Template.dashboard.can_create_game = function(){

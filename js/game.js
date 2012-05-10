@@ -2,7 +2,7 @@ if (Meteor.is_client) {
   
   // helper functions
   Template.game.show_game = function(){
-    return Session.get('game_id') != null
+    return (Session.get('game_id') != null) && (!Session.get('api'))
   }
 
   Template.game.show_move = function(){

@@ -7,7 +7,7 @@ if (Meteor.is_client) {
   }
   
   Template.welcome.show_welcome = function(){
-    return !Session.get('show_dashboard');
+    return !Session.get('show_dashboard') && (Session.get('api') == false);
   }
   
   Template.welcome.create_act = function(){
