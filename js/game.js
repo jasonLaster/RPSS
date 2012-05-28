@@ -247,19 +247,6 @@ if (Meteor.is_client) {
 
 // ONGOING HELPER FUNCTIONS
 
-var previous_round = function(){
-  var game = current_game()
-  if(game){
-    return game.rounds[game.rounds.length-2];
-  } else {
-    return null;
-  }  
-}
-
-var current_game = function(){
-  return Games.findOne(Session.get('game_id'))
-}
-
 var round_move = function(round, player, move){  
   if(round) {
     return (round[player] === move) ? "btn-primary" : ""
@@ -283,7 +270,13 @@ var update_round = function(player, move) {
   
   // make move
   round[player] = move;
-  if(computer_game()) ai_move(round);
+  if(computer_game()) {
+    var prev_round = rounds.length >= 1 ? previous_round(game) : null;
+    var prev = prev_round === null ? null : prev_round.p1;
+    prev = move_to_i(prev);
+    console.log('prev round', prev_round, 'prev', prev)
+    ai_move(round, prev);
+  } 
   rounds[rounds.length-1] = round
   
   // update rounds
@@ -381,8 +374,10 @@ var round_over = function(round) {
 }
 
 // AI
-var ai_move = function(round) {
-  var move = ["rock", "paper", "scissors"][Math.floor(Math.random()*3)];
+var ai_move = function(round, prev) {
+  
+  var move = next(prev);
+  move = move_to_s(move);
   round['p2'] = move;
   return round;
 }
@@ -396,6 +391,31 @@ var current_round = function(game){
   }
 }
 
+var previous_round = function(){
+  var game = current_game()
+  if(game){
+    var round_num = game.rounds.length-2;
+    if (round_num >= 0) {
+      return game.rounds[round_num];  
+    } else {
+      return null;
+    }
+  } else {
+    return null;
+  }  
+}
+
+var current_game = function(){
+  return Games.findOne(Session.get('game_id'))
+}
+
+var move_to_i = function(move) {
+  return _.indexOf(["rock", "paper", "scissors"], move)
+}
+
+var move_to_s = function(move) {
+  return ["rock", "paper", "scissors"][move]
+}
 
 var player1 = function(game){
   if (game === undefined) game = current_game(); 
